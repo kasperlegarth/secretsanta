@@ -4,7 +4,7 @@
       <!-- Email Input -->
       <div>
         <label for="email" class="block text-xl font-bold text-green-800 mb-2">
-          Modtager
+          Modtager (email adresse)
         </label>
         <input
           id="email"
