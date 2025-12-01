@@ -172,7 +172,7 @@ const handleSubmit = async () => {
     } else {
       feedback.value = {
         type: 'error',
-        message: response.error || 'Der skete en fejl. Prøv igen.'
+        message: (response as any).error || 'Der skete en fejl. Prøv igen.'
       };
     }
   } catch (error) {
