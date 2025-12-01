@@ -8,7 +8,11 @@
       "Bash(node generate-favicons.js:*)",
       "Bash(dir:*)",
       "Bash(lsof:*)",
-      "Bash(xargs kill -9)"
+      "Bash(xargs kill -9)",
+      "Bash(npm run lint:*)",
+      "Bash(npx nuxi:*)",
+      "Bash(npm run lint:fix:*)",
+      "Bash(npm run typecheck:*)"
     ],
     "deny": [],
     "ask": []

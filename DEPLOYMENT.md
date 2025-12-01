@@ -84,13 +84,11 @@ Hvis du vil bruge dit eget domæne (f.eks. drillenisse.dk):
 ✅ Email sending via Resend API
 ✅ File uploads (maks 3 filer)
 ✅ Sne animation med physics
-✅ Baggrundsmusiik (læg MP3 filer i `/public/audio/`)
-✅ Kontrolpanel til sne og musik
+✅ Kontrolpanel til sne-indstillinger
 ✅ Responsive design
 
 ## Vigtigt:
 
-- **Musik filer:** Hvis du vil have musik på produktions-sitet, skal du committe MP3 filer til git i `public/audio/` mappen
 - **API Key:** Hold din Resend API key hemmelig - ALDRIG commit .env filen til git!
 - **Email limits:** Resend gratis tier har 100 emails/dag, 3000/måned
 
@@ -100,11 +98,6 @@ Hvis du vil bruge dit eget domæne (f.eks. drillenisse.dk):
 - Tjek at `RESEND_API_KEY` er sat korrekt i Vercel
 - Tjek at domænet `drillenisse.dk` er verificeret i Resend
 - Tjek Vercel Function logs under Deployments → Function Logs
-
-**Musik virker ikke:**
-- Tjek at lydfiler er i `public/audio/` mappen
-- Tjek at filerne er committed til git
-- Tjek browser console for fejl
 
 **Sne virker ikke:**
 - Tjek browser console for JavaScript fejl

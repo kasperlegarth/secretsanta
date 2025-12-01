@@ -11,8 +11,8 @@
     <div class="flex items-center justify-between">
       <p class="font-medium">{{ message }}</p>
       <button
-        @click="$emit('close')"
         class="text-2xl hover:opacity-70 transition-opacity ml-4"
+        @click="$emit('close')"
       >
         ×
       </button>
@@ -21,14 +21,26 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
+
 defineProps<{
   type: 'success' | 'error';
   message: string;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   close: [];
 }>();
+
+// Auto-dismiss efter 5 sekunder
+onMounted(() => {
+  const timer = setTimeout(() => {
+    emit('close');
+  }, 5000);
+
+  // Cleanup hvis komponenten unmountes før timer udløber
+  return () => clearTimeout(timer);
+});
 </script>
 
 <style scoped>

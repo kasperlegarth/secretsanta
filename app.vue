@@ -10,43 +10,41 @@
 
       <!-- Gave nederst til venstre -->
       <div class="decoration gift bottom-left">🎁</div>
+
+      <!-- Gave nederst til højre -->
+      <div class="decoration gift bottom-right">🎁</div>
     </div>
 
     <!-- Faldende sne -->
-    <canvas ref="snowCanvas" class="snow-canvas"></canvas>
+    <canvas ref="snowCanvas" class="snow-canvas"/>
 
     <!-- Sne kontrol panel -->
     <div class="snow-controls">
-      <button @click="showControls = !showControls" class="controls-toggle">
-        ⚙️
+      <button class="controls-toggle" @click="showControls = !showControls">
+        ❄️
       </button>
       <div v-if="showControls" class="controls-panel">
         <h3>Indstillinger</h3>
         <div class="control-group">
           <label>Antal snefnug: {{ snowflakeCount }}</label>
-          <input type="range" v-model.number="snowflakeCount" min="50" max="500" step="10" />
+          <input v-model.number="snowflakeCount" type="range" min="50" max="500" step="10" >
         </div>
         <div class="control-group">
           <label>Hastighed: {{ snowSpeed.toFixed(1) }}x</label>
-          <input type="range" v-model.number="snowSpeed" min="0.5" max="5" step="0.1" />
+          <input v-model.number="snowSpeed" type="range" min="0.5" max="5" step="0.1" >
         </div>
         <div class="control-group">
           <label>Akkumulerings hastighed: {{ accumSpeed.toFixed(1) }}x</label>
-          <input type="range" v-model.number="accumSpeed" min="0.5" max="100" step="0.5" />
+          <input v-model.number="accumSpeed" type="range" min="0.5" max="100" step="0.5" >
         </div>
-        <div class="control-group">
-          <button @click="resetSnow" class="reset-btn">Nulstil sne</button>
-        </div>
-        <button @click="toggleMusic" class="music-btn">
-          {{ isMusicPlaying ? '🔊 Musik til' : '🔇 Musik fra' }}
-        </button>
+        <button class="reset-btn" @click="resetSnow">Nulstil sne</button>
       </div>
     </div>
 
     <div class="container mx-auto px-4 py-8 relative z-10">
       <header class="text-center -mb-12">
         <div class="flex items-center justify-center gap-4 mb-4">
-          <img src="/assets/images/julemand.png" alt="Julemand" class="w-[200px] -me-28 object-contain" />
+          <img src="/assets/images/julemand.png" alt="Julemand" class="w-[200px] -me-28 object-contain" >
           <svg
             width="360"
             height="140"
@@ -91,20 +89,6 @@
 
       <main class="max-w-2xl mx-auto">
         <EmailForm />
-
-        <!-- Audio player -->
-        <div class="mt-8">
-          <audio
-            ref="audioPlayer"
-            controls
-            autoplay
-            class="w-full rounded-2xl"
-            style="filter: sepia(20%) saturate(70%) hue-rotate(-10deg);"
-          >
-            <source v-if="currentTrack" :src="currentTrack" type="audio/mpeg">
-            Din browser understøtter ikke audio elementet.
-          </audio>
-        </div>
       </main>
     </div>
   </div>
@@ -118,53 +102,6 @@ const showControls = ref(false);
 const snowflakeCount = ref(150);
 const snowSpeed = ref(1);
 const accumSpeed = ref(50);
-
-// Audio player
-const audioPlayer = ref<HTMLAudioElement | null>(null);
-const currentTrack = ref<string>('');
-const audioFiles = ref<string[]>([]);
-const currentTrackIndex = ref(0);
-const isMusicPlaying = ref(false);
-
-const loadAudioFiles = async () => {
-  try {
-    const response = await fetch('/api/audio-files');
-    if (response.ok) {
-      audioFiles.value = await response.json();
-      if (audioFiles.value.length > 0) {
-        currentTrack.value = audioFiles.value[0];
-      }
-    }
-  } catch (error) {
-    console.error('Kunne ikke indlæse lydfiler:', error);
-  }
-};
-
-const playNextTrack = () => {
-  if (audioFiles.value.length === 0) return;
-  currentTrackIndex.value = (currentTrackIndex.value + 1) % audioFiles.value.length;
-  currentTrack.value = audioFiles.value[currentTrackIndex.value];
-
-  // Wait for source to update, then play
-  setTimeout(() => {
-    if (audioPlayer.value) {
-      audioPlayer.value.load();
-      audioPlayer.value.play().catch(err => console.error('Afspilningsfejl:', err));
-    }
-  }, 100);
-};
-
-const toggleMusic = () => {
-  if (!audioPlayer.value) return;
-
-  if (audioPlayer.value.paused) {
-    audioPlayer.value.play();
-    isMusicPlaying.value = true;
-  } else {
-    audioPlayer.value.pause();
-    isMusicPlaying.value = false;
-  }
-};
 
 interface Snowflake {
   x: number;
@@ -201,23 +138,6 @@ const createSnowflakes = (count: number, canvasWidth: number, canvasHeight: numb
 };
 
 onMounted(() => {
-  // Load audio files
-  loadAudioFiles();
-
-  // Setup audio player event listeners
-  if (audioPlayer.value) {
-    // Set default volume to 30%
-    audioPlayer.value.volume = 0.3;
-
-    audioPlayer.value.addEventListener('ended', playNextTrack);
-    audioPlayer.value.addEventListener('play', () => {
-      isMusicPlaying.value = true;
-    });
-    audioPlayer.value.addEventListener('pause', () => {
-      isMusicPlaying.value = false;
-    });
-  }
-
   const canvas = snowCanvas.value;
   if (!canvas) return;
 
@@ -494,6 +414,11 @@ onMounted(() => {
   left: 8%;
 }
 
+.bottom-right {
+  bottom: 8%;
+  right: 8%;
+}
+
 /* Sne canvas */
 .snow-canvas {
   position: fixed;
@@ -562,23 +487,6 @@ onMounted(() => {
 .control-group input[type="range"] {
   width: 100%;
   cursor: pointer;
-}
-
-.music-btn {
-  width: 100%;
-  padding: 10px;
-  background: #2d5016;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-  font-size: 16px;
-}
-
-.music-btn:hover {
-  background: #1a3009;
 }
 
 .reset-btn {

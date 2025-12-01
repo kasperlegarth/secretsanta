@@ -4,8 +4,14 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxt/eslint'
   ],
+
+  typescript: {
+    typeCheck: true,
+    strict: true
+  },
 
   // Nitro config for Vercel
   nitro: {

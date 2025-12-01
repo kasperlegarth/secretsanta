@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: #f5e6d3" class="rounded-3xl shadow-xl p-8 border-0">
-    <form @submit.prevent="handleSubmit" class="space-y-6">
+    <form class="space-y-6" @submit.prevent="handleSubmit">
       <!-- Email Input -->
       <div>
         <label for="email" class="block text-xl font-bold text-green-800 mb-2">
@@ -13,7 +13,7 @@
           class="w-full px-4 py-3 border-3 border-cream-dark rounded-2xl focus:border-green-700 focus:outline-none transition-colors bg-white"
           placeholder=""
           :disabled="isSubmitting"
-        />
+        >
       </div>
 
       <!-- Message Textarea -->
@@ -28,7 +28,7 @@
           class="w-full px-4 py-3 border-3 border-cream-dark rounded-2xl focus:border-green-700 focus:outline-none resize-none transition-colors bg-white"
           placeholder=""
           :disabled="isSubmitting"
-        ></textarea>
+        />
       </div>
 
       <!-- File Input -->
@@ -44,7 +44,7 @@
           class="w-full px-4 py-3 border-3 border-cream-dark rounded-2xl focus:border-green-700 focus:outline-none transition-colors bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-800 hover:file:bg-green-200"
           :disabled="isSubmitting"
           @change="handleFileChange"
-        />
+        >
       </div>
 
       <!-- File List -->
@@ -64,9 +64,9 @@
           </div>
           <button
             type="button"
-            @click="removeFile(index)"
             class="text-red-600 hover:text-red-800 text-xl font-bold"
             :disabled="isSubmitting"
+            @click="removeFile(index)"
           >
             ×
           </button>
